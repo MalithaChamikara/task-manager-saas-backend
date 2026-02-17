@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+﻿import { Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-// This guard uses the 'jwt' strategy defined in JwtStrategy to protect routes
+// This guard will be used to protect routes that require authentication using JWT.
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') { }
+export class JwtAuthGuard extends AuthGuard('jwt') {}

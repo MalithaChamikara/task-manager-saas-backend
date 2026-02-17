@@ -1,4 +1,4 @@
-import {
+﻿import {
     Body,
     Controller,
     Get,
@@ -7,7 +7,7 @@ import {
     Res,
     UseGuards,
 } from '@nestjs/common';
-import type { Response, Request } from 'express';
+import type { Request, Response } from 'express';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
@@ -19,7 +19,7 @@ export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
     // auth/register
-    // user registration endpoint with rate limiting to prevent abuse
+    // registera new user
     @UseGuards(ThrottlerGuard)
     @Throttle({ default: { ttl: 60, limit: 5 } })
     @Post('register')
@@ -42,7 +42,7 @@ export class AuthController {
     }
 
     // auth/login
-    // user login endpoint with rate limiting to prevent brute-force attacks
+    // login an existing user
     @UseGuards(ThrottlerGuard)
     @Throttle({ default: { ttl: 60, limit: 5 } })
     @Post('login')
@@ -65,8 +65,7 @@ export class AuthController {
     }
 
     // auth/refresh
-    // endpoint to refresh access tokens using a valid refresh token, with rate limiting to prevent abuse
-
+    // refresh access token using refresh token
     @UseGuards(ThrottlerGuard)
     @Throttle({ default: { ttl: 60, limit: 10 } })
     @Post('refresh')
@@ -90,7 +89,7 @@ export class AuthController {
     }
 
     // auth/me
-    // protected endpoint to get current user info, requires a valid access token
+    // get current user info
     @UseGuards(JwtAuthGuard)
     @Get('me')
     me(@Req() req: any) {
@@ -100,7 +99,7 @@ export class AuthController {
     }
 
     // auth/logout
-    // protected endpoint to log out the user by clearing the refresh token cookie 
+    // logout the user by clearing the refresh token cookie and removing the refresh token hash from the database
     @UseGuards(JwtAuthGuard)
     @Post('logout')
     async logout(
@@ -115,3 +114,4 @@ export class AuthController {
         return { ok: true };
     }
 }
+
